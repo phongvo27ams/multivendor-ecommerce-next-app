@@ -1,12 +1,12 @@
 'use client'
 
-import { dummyStoreDashboardData } from "@/assets/assets"
+import { dummyStoreDashboardData } from "../../assets/assets"
 import { CircleDollarSignIcon, ShoppingBasketIcon, StarIcon, TagsIcon } from "lucide-react"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
-import Loading from "@/components/Loading"
+import Loading from "../../components/Loading"
 
 export default function Dashboard() {
     const currency = process.env.NEXT_PUBLIC_CURRENCY_SYMBOL || '$'

@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteItemFromCart } from "@/lib/features/cart/cartSlice";
+import { deleteItemFromCart } from "../../../lib/features/cart/cartSlice";
 import { Trash2Icon } from "lucide-react";
 import Image from "next/image";
 
-import Counter from "@/components/Counter";
-import OrderSummary from "@/components/OrderSummary";
-import PageTitle from "@/components/PageTitle";
+import Counter from "../../../components/Counter";
+import OrderSummary from "../../../components/OrderSummary";
+import PageTitle from "../../../components/PageTitle";
 
 export default function Cart() {
   const currency = process.env.NEXT_PUBLIC_CURRENCY_SYMBOL || '$';

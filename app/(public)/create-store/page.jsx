@@ -1,10 +1,10 @@
 'use client'
 
-import { assets } from "@/assets/assets"
 import { useEffect, useState } from "react"
 import Image from "next/image"
 import toast from "react-hot-toast"
-import Loading from "@/components/Loading"
+import { assets } from "../../assets/assets"
+import Loading from "../../components/Loading"
 
 export default function CreateStore() {
   const [alreadySubmitted, setAlreadySubmitted] = useState(false)

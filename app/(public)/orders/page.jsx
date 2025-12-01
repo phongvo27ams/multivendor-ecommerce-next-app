@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 
-import PageTitle from "@/components/PageTitle";
-import OrderItem from "@/components/OrderItem";
-import { orderDummyData } from "@/assets/assets";
+import PageTitle from "../../components/PageTitle";
+import OrderItem from "../../components/OrderItem";
+import { orderDummyData } from "../../assets/assets";
 
 export default function Orders() {
   const [orders, setOrders] = useState([]);

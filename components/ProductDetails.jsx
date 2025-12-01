@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { addToCart } from "@/lib/features/cart/cartSlice";
+import { addToCart } from "../lib/features/cart/cartSlice";
 import { StarIcon, TagIcon, EarthIcon, CreditCardIcon, UserIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";

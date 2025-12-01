@@ -5,7 +5,7 @@ import { MoveLeftIcon } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useSelector } from "react-redux"
 
-import ProductCard from "@/components/ProductCard"
+import ProductCard from "../../../components/ProductCard"
 
 function ShopContent() {
   // get query params ?search=abc

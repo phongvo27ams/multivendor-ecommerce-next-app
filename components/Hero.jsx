@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 import { ArrowRightIcon, ChevronRightIcon } from 'lucide-react';
 
-import { assets } from '@/assets/assets';
+import { assets } from '../assets/assets';
 
 import CategoriesMarquee from './CategoriesMarquee';
 
