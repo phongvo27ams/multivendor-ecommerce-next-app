@@ -4,8 +4,8 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-import ProductDescription from "../../../components/ProductDescription";
-import ProductDetails from "../../../components/ProductDetails";
+import ProductDescription from "../../../../components/ProductDescription";
+import ProductDetails from "../../../../components/ProductDetails";
 
 export default function Product() {
   const { productId } = useParams();
