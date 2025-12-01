@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react"
 import Image from "next/image"
 import toast from "react-hot-toast"
-import { assets } from "../../assets/assets"
-import Loading from "../../components/Loading"
+import { assets } from "../../../assets/assets"
+import Loading from "../../../components/Loading"
 
 export default function CreateStore() {
   const [alreadySubmitted, setAlreadySubmitted] = useState(false)
