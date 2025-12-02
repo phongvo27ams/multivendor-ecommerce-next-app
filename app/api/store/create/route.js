@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
-import { getAuth } from "@clerk/nextjs/dist/types/server";
-import imagekit from "@/configs/imageKit";
+import { getAuth } from "@clerk/nextjs/server";
+import imagekit from "../../../../configs/imageKit";
+import prisma from "../../../../lib/prisma";
 
 // Create a new store route
 export async function POST(request) {
