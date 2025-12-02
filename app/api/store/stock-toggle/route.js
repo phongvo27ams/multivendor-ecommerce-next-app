@@ -1,8 +1,8 @@
-import prisma from "../../../lib/prisma";
+import prisma from "../../../../lib/prisma";
 import { getAuth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
-import authSeller from "../../../middlewares/authSeller";
+import authSeller from "../../../../middlewares/authSeller";
 
 // Toggle stock status for a product
 export async function POST(request) {

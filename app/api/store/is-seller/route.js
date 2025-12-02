@@ -1,8 +1,8 @@
-import prisma from "@/lib/prisma";
+import prisma from "../../../../lib/prisma";
 import { NextResponse } from "next/server";
 import { getAuth } from "@clerk/nextjs/server";
 
-import authSeller from "@/middlewares/authSeller";
+import authSeller from "../../../../middlewares/authSeller";
 
 // Auth seller
 export async function GET(request) {
