@@ -1,16 +1,23 @@
 'use client'
 
-import { useEffect, useState } from "react"
-import Image from "next/image"
-import toast from "react-hot-toast"
-import { assets } from "../../../assets/assets"
-import Loading from "../../../components/Loading"
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import toast from "react-hot-toast";
+import { assets } from "../../../assets/assets";
+import Loading from "../../../components/Loading";
+import { useAuth, useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
 export default function CreateStore() {
-  const [alreadySubmitted, setAlreadySubmitted] = useState(false)
-  const [status, setStatus] = useState("")
-  const [loading, setLoading] = useState(true)
-  const [message, setMessage] = useState("")
+  const { user } = useUser();
+  const router = useRouter();
+  const { getToken } = useAuth();
+
+  const [alreadySubmitted, setAlreadySubmitted] = useState(false);
+  const [status, setStatus] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState("");
 
   const [storeInfo, setStoreInfo] = useState({
     name: "",
@@ -20,29 +27,97 @@ export default function CreateStore() {
     contact: "",
     address: "",
     image: ""
-  })
+  });
 
   const onChangeHandler = (e) => {
-    setStoreInfo({ ...storeInfo, [e.target.name]: e.target.value })
-  }
+    setStoreInfo({ ...storeInfo, [e.target.name]: e.target.value });
+  };
 
   const fetchSellerStatus = async () => {
-    // Logic to check if the store is already submitted
+    const token = await getToken();
 
+    try {
+      const { data } = await axios.get('/api/store/create', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
 
-    setLoading(false)
+      if (["pending", "approved", "rejected"].includes(data.status)) {
+        setStatus(data.status);
+        setAlreadySubmitted(true);
+
+        switch (data.status) {
+          case "pending":
+            setMessage("Your store application is under review. We will notify you once it's approved.");
+            break;
+          case "approved":
+            setMessage("Your store has been approved! Redirecting you to the dashboard...");
+            setTimeout(() => {
+              router.push('/store');
+            }, 5000);
+            break;
+          case "rejected":
+            setMessage("Unfortunately, your store application was rejected. You may contact support for more information.");
+            break;
+          default:
+            break;
+        }
+      } else {
+        setAlreadySubmitted(false);
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.error || error.message);
+    }
+
+    setLoading(false);
   }
 
   const onSubmitHandler = async (e) => {
-    e.preventDefault()
-    // Logic to submit the store details
+    e.preventDefault();
 
+    if (!user) {
+      return toast("Please login to continue");
+    }
 
+    try {
+      const token = await getToken();
+
+      const formData = new FormData();
+      formData.append("name", storeInfo.name);
+      formData.append("username", storeInfo.username);
+      formData.append("description", storeInfo.description);
+      formData.append("email", storeInfo.email);
+      formData.append("contact", storeInfo.contact);
+      formData.append("address", storeInfo.address);
+      formData.append("image", storeInfo.image);
+
+      const { data } = await axios.post('/api/store/create', formData, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      toast.success(data.message);
+      await fetchSellerStatus();
+    } catch (error) {
+      toast.error(error?.response?.data?.error || error.message);
+    }
   }
 
   useEffect(() => {
-    fetchSellerStatus()
-  }, [])
+    if (user) {
+      fetchSellerStatus();
+    }
+  }, [user]);
+
+  if (!user) {
+    return (
+      <div className="min-h-[80vh] mx-6 flex items-center justify-center text-slate-400">
+        <h1 className="text-2xl sm:text-4xl font-semibold">Please <span className="text-slate-500">login</span> to create a store.</h1>
+      </div>
+    );
+  }
 
   return !loading ? (
     <>
