@@ -1,5 +1,5 @@
 import prisma from "../../../../lib/prisma";
-import imagekit from "../../../../configs/imageKit";
+import getImageKit from "../../../../configs/imageKit";
 import { getAuth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
@@ -29,6 +29,7 @@ export async function POST(request) {
     }
 
     // Upload images to ImageKit
+    const imagekit = getImageKit();
     const imageUrl = await Promise.all(images.map(async (image) => {
       const buffer = Buffer.from(await image.arrayBuffer());
 

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getAuth } from "@clerk/nextjs/server";
-import imagekit from "../../../../configs/imageKit";
+import getImageKit from "../../../../configs/imageKit";
 import prisma from "../../../../lib/prisma";
 
 // Create a new store route
@@ -41,6 +41,7 @@ export async function POST(request) {
     }
 
     const buffer = Buffer.from(await image.arrayBuffer());
+    const imagekit = getImageKit();
     const response = await imagekit.upload({
       file: buffer,
       fileName: image.name,
