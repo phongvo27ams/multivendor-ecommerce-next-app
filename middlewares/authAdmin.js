@@ -8,7 +8,7 @@ const authAdmin = async (userId) => {
     const client = await clerkClient();
     const user = await client.users.getUser(userId);
 
-    return process.env.ADMIN_EMAILS.split(',').includes(user.emailAddresses[0].emailAddress);
+    return process.env.ADMIN_EMAIL.split(',').includes(user.emailAddresses[0].emailAddress);
   } catch (error) {
     console.error("Admin authentication error:", error);
     return false;
