@@ -1,5 +1,5 @@
 import { getAuth } from "@clerk/nextjs/server";
-import authAdmin from "@/middlewares/authAdmin";
+import authAdmin from "../../../../middlewares/authAdmin";
 import prisma from "../../../../lib/prisma";
 import { NextResponse } from "next/server";
 
