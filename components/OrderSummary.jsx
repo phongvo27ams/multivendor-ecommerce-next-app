@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { PlusIcon, SquarePenIcon, XIcon } from "lucide-react";
 import AddressModal from "./AddressModal";
 import toast from "react-hot-toast";
@@ -8,17 +8,18 @@ import { Protect, useAuth, useUser } from "@clerk/nextjs";
 import axios from "axios";
 
 import { formatMoney } from "../lib/format";
+import { fetchCart } from "../lib/features/cart/cartSlice";
 
 const OrderSummary = ({ totalPrice, items }) => {
   const { user } = useUser();
   const { getToken } = useAuth();
+  const dispatch = useDispatch();
 
   const currency = process.env.NEXT_PUBLIC_CURRENCY_SYMBOL || "$";
 
   const router = useRouter();
 
   const addressList = useSelector(state => state.address.list);
-  console.log("OrderSummary: Address list:", addressList);
 
   const [paymentMethod, setPaymentMethod] = useState("COD");
   const [selectedAddress, setSelectedAddress] = useState(null);
@@ -50,7 +51,43 @@ const OrderSummary = ({ totalPrice, items }) => {
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
 
-    router.push("/orders")
+    try {
+      if (!user) {
+        return toast.error("Please login to place order");
+      }
+
+      if (!selectedAddress) {
+        return toast.error("Please select an address to place order");
+      }
+
+      const token = await getToken();
+
+      const orderData = {
+        addressId: selectedAddress.id,
+        items,
+        paymentMethod,
+      };
+
+      if (coupon) {
+        orderData.couponCode = coupon.code;
+      }
+
+      // Create the order
+      const { data } = await axios.post("/api/orders", orderData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (paymentMethod === "STRIPE") {
+        window.location.href = data.session.url;
+      } else {
+        toast.success(data.message);
+        router.push("/orders");
+        dispatch(fetchCart({ getToken }));
+      }
+    } catch (error) {
+      console.error("Error placing order:", error);
+      toast.error(error?.response?.data?.error || error.message);
+    }
   }
 
   return (
