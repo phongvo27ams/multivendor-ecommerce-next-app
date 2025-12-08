@@ -12,12 +12,12 @@ const Navbar = () => {
   const { openSignIn } = useClerk();
   const router = useRouter();
 
-  const [search, setSearch] = useState('')
-  const cartCount = useSelector(state => state.cart.total)
+  const [search, setSearch] = useState("");
+  const cartCount = useSelector(state => state.cart.total);
 
   const handleSearch = (e) => {
-    e.preventDefault()
-    router.push(`/shop?search=${search}`)
+    e.preventDefault();
+    router.push(`/shop?search=${search}`);
   }
 
   return (
@@ -63,7 +63,7 @@ const Navbar = () => {
                     <UserButton.Action
                       label="My Orders"
                       onClick={() => router.push('/orders')}
-                      icon={<PackageIcon size={16} />}
+                      labelIcon={<PackageIcon size={16} />}
                     />
                   </UserButton.MenuItems>
                 </UserButton>
@@ -81,7 +81,7 @@ const Navbar = () => {
                       <UserButton.Action
                         label="Cart"
                         onClick={() => router.push('/cart')}
-                        icon={<ShoppingCart size={16} />}
+                        labelIcon={<ShoppingCart size={16} />}
                       />
                     </UserButton.MenuItems>
                   </UserButton>
@@ -91,7 +91,7 @@ const Navbar = () => {
                       <UserButton.Action
                         label="My Orders"
                         onClick={() => router.push('/orders')}
-                        icon={<PackageIcon size={16} />}
+                        labelIcon={<PackageIcon size={16} />}
                       />
                     </UserButton.MenuItems>
                   </UserButton>
@@ -110,4 +110,4 @@ const Navbar = () => {
   )
 }
 
-export default Navbar
+export default Navbar;
