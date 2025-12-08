@@ -116,7 +116,10 @@ const OrderSummary = ({ totalPrice, items }) => {
       <div className='flex justify-between py-4'>
         <p>Total:</p>
         <p className='font-medium text-right'>
-          <Protect plan={'plus'} fallback={`${coupon ? formatMoney(totalPrice + 5 - (coupon.discount / 100) * totalPrice, currency) : formatMoney(totalPrice + 5, currency)}`}></Protect>
+          {/* Using Protect to conditionally show total price based on plan */}
+          <Protect plan={'plus'} fallback={`${coupon ? formatMoney(totalPrice + 5 - (coupon.discount / 100) * totalPrice, currency) : formatMoney(totalPrice + 5, currency)}`}>
+            {coupon ? formatMoney(totalPrice - (coupon.discount / 100) * totalPrice, currency) : formatMoney(totalPrice, currency)}
+          </Protect>
         </p>
       </div>
 
