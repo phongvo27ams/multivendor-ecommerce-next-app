@@ -18,7 +18,7 @@ export async function POST(request) {
     if (status === "approved") {
       await prisma.store.update({
         where: { id: storeId },
-        data: { status: "approved", isApproved: true },
+        data: { status: "approved" },
       });
     } else if (status === "rejected") {
       await prisma.store.update({

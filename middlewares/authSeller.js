@@ -1,23 +1,23 @@
 import prisma from "../lib/prisma";
 
+// Returns storeId if the user has an approved store, otherwise false
 const authSeller = async (userId) => {
   try {
-    const user = await prisma.store.findUnique({
-      where: { id: userId },
-      include: { store: true },
+    if (!userId) return false;
+
+    const store = await prisma.store.findUnique({
+      where: { userId },
     });
 
-    if (user.store) {
-      if (user.store.status === "approved") {
-        return user.store.id;
-      }
-    } else {
-      return false;
+    if (store && store.status === "approved") {
+      return store.id;
     }
+
+    return false;
   } catch (error) {
     console.error("Error in authSeller middleware:", error);
     return false;
   }
-}
+};
 
 export default authSeller;
