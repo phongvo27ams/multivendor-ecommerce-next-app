@@ -4,6 +4,7 @@ import { StarIcon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
+import { formatMoney } from "../lib/format"
 
 const ProductCard = ({ product }) => {
   const currency = process.env.NEXT_PUBLIC_CURRENCY_SYMBOL || '$'
@@ -25,7 +26,7 @@ const ProductCard = ({ product }) => {
             ))}
           </div>
         </div>
-        <p>{currency}{product.price}</p>
+        <p>{formatMoney(product.price, currency)}</p>
       </div>
     </Link>
   )

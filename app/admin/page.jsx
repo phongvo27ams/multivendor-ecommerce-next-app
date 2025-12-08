@@ -2,9 +2,9 @@
 
 import axios from "axios";
 import { useAuth } from "@clerk/nextjs"
-import { dummyAdminDashboardData } from "../../assets/assets"
 import Loading from "../../components/Loading"
 import OrdersAreaChart from "../../components/OrdersAreaChart"
+import { formatMoney } from "../../lib/format"
 import { CircleDollarSignIcon, ShoppingBasketIcon, StoreIcon, TagsIcon } from "lucide-react"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast";
@@ -25,7 +25,7 @@ export default function AdminDashboard() {
 
   const dashboardCardsData = [
     { title: 'Total Products', value: dashboardData.products, icon: ShoppingBasketIcon },
-    { title: 'Total Revenue', value: currency + dashboardData.revenue, icon: CircleDollarSignIcon },
+    { title: 'Total Revenue', value: formatMoney(Number(dashboardData.revenue), currency), icon: CircleDollarSignIcon },
     { title: 'Total Orders', value: dashboardData.orders, icon: TagsIcon },
     { title: 'Total Stores', value: dashboardData.stores, icon: StoreIcon },
   ]

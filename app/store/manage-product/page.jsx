@@ -5,6 +5,7 @@ import { useEffect, useState } from "react"
 import { toast } from "react-hot-toast"
 import Image from "next/image"
 import Loading from "../../../components/Loading"
+import { formatMoney } from "../../../lib/format"
 import { useAuth, useUser } from "@clerk/nextjs"
 
 export default function StoreManageProducts() {
@@ -67,7 +68,7 @@ export default function StoreManageProducts() {
             <th className="px-4 py-3 hidden md:table-cell">Description</th>
             <th className="px-4 py-3 hidden md:table-cell">MRP</th>
             <th className="px-4 py-3">Price</th>
-            <th className="px-4 py-3">Actions</th>
+            <th className="px-4 py-3">In Stock</th>
           </tr>
         </thead>
         <tbody className="text-slate-700">
@@ -80,8 +81,8 @@ export default function StoreManageProducts() {
                 </div>
               </td>
               <td className="px-4 py-3 max-w-md text-slate-600 hidden md:table-cell truncate">{product.description}</td>
-              <td className="px-4 py-3 hidden md:table-cell">{currency} {product.mrp.toLocaleString()}</td>
-              <td className="px-4 py-3">{currency} {product.price.toLocaleString()}</td>
+              <td className="px-4 py-3 hidden md:table-cell">{formatMoney(product.mrp, currency)}</td>
+              <td className="px-4 py-3">{formatMoney(product.price, currency)}</td>
               <td className="px-4 py-3 text-center">
                 <label className="relative inline-flex items-center cursor-pointer text-gray-900 gap-3">
                   <input type="checkbox" className="sr-only peer" onChange={() => toast.promise(toggleStock(product.id), { loading: "Updating data..." })} checked={product.inStock} />

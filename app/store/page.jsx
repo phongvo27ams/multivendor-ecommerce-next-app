@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useAuth } from "@clerk/nextjs";
 import axios from "axios";
 import { CircleDollarSignIcon, ShoppingBasketIcon, StarIcon, TagsIcon } from "lucide-react";
+import { formatMoney } from "../../lib/format";
 
 import Loading from "../../components/Loading";
 
@@ -27,7 +28,7 @@ export default function Dashboard() {
 
   const dashboardCardsData = [
     { title: 'Total Products', value: dashboardData.totalProducts, icon: ShoppingBasketIcon },
-    { title: 'Total Earnings', value: currency + dashboardData.totalEarnings, icon: CircleDollarSignIcon },
+    { title: 'Total Earnings', value: formatMoney(dashboardData.totalEarnings, currency), icon: CircleDollarSignIcon },
     { title: 'Total Orders', value: dashboardData.totalOrders, icon: TagsIcon },
     { title: 'Total Ratings', value: dashboardData.ratings.length, icon: StarIcon },
   ]

@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 
 import Counter from "./Counter";
+import { formatMoney } from "../lib/format";
 
 const ProductDetails = ({ product }) => {
   const productId = product.id;
@@ -49,8 +50,8 @@ const ProductDetails = ({ product }) => {
           <p className="text-sm ml-3 text-slate-500">{product.rating.length} Reviews</p>
         </div>
         <div className="flex items-start my-6 gap-3 text-2xl font-semibold text-slate-800">
-          <p> {currency}{product.price} </p>
-          <p className="text-xl text-slate-500 line-through">{currency}{product.mrp}</p>
+              <p>{formatMoney(product.price, currency)}</p>
+              <p className="text-xl text-slate-500 line-through">{formatMoney(product.mrp, currency)}</p>
         </div>
         <div className="flex items-center gap-2 text-slate-500">
           <TagIcon size={14} />
