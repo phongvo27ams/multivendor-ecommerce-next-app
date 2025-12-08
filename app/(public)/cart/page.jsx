@@ -9,10 +9,9 @@ import Image from "next/image";
 import Counter from "../../../components/Counter";
 import OrderSummary from "../../../components/OrderSummary";
 import PageTitle from "../../../components/PageTitle";
+import { formatMoney } from "../../../lib/format";
 
 export default function Cart() {
-  const currency = process.env.NEXT_PUBLIC_CURRENCY_SYMBOL || '$';
-
   const { cartItems } = useSelector(state => state.cart);
   const products = useSelector(state => state.product.list);
 
@@ -76,13 +75,13 @@ export default function Cart() {
                       <div>
                         <p className="max-sm:text-sm">{item.name}</p>
                         <p className="text-xs text-slate-500">{item.category}</p>
-                        <p>{currency}{item.price}</p>
+                        <p>{formatMoney(item.price)}</p>
                       </div>
                     </td>
                     <td className="text-center">
                       <Counter productId={item.id} />
                     </td>
-                    <td className="text-center">{currency}{(item.price * item.quantity).toLocaleString()}</td>
+                    <td className="text-center">{formatMoney(item.price * item.quantity).toLocaleString()}</td>
                     <td className="text-center max-md:hidden">
                       <button onClick={() => handleDeleteItemFromCart(item.id)} className=" text-red-500 hover:bg-red-50 p-2.5 rounded-full active:scale-95 transition-all">
                         <Trash2Icon size={18} />

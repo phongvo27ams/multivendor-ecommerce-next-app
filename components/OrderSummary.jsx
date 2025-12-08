@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
+import { useSelector } from 'react-redux';
 import { PlusIcon, SquarePenIcon, XIcon } from 'lucide-react';
 import AddressModal from './AddressModal';
-import { useSelector } from 'react-redux';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+
 import { formatMoney } from "../lib/format";
 
 const OrderSummary = ({ totalPrice, items }) => {
@@ -12,6 +13,7 @@ const OrderSummary = ({ totalPrice, items }) => {
   const router = useRouter();
 
   const addressList = useSelector(state => state.address.list);
+  console.log("OrderSummary: Address list:", addressList);
 
   const [paymentMethod, setPaymentMethod] = useState('COD');
   const [selectedAddress, setSelectedAddress] = useState(null);
