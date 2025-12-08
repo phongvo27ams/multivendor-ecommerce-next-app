@@ -29,10 +29,9 @@ export async function POST(request) {
 
     await prisma.store.update({
       where: { id: storeId },
-      data: { isApproved: !store.isApproved },
+      data: { isActive: !store.isActive },
     });
-
-    return NextResponse.json({ message: "Store approval status toggled successfully" }, { status: 200 });
+    return NextResponse.json({ message: "Store active status toggled successfully" }, { status: 200 });
   } catch (error) {
     console.error("Error fetching stores for approval:", error);
     return NextResponse.json({ error: error.code || error.message }, { status: 400 });

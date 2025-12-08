@@ -18,12 +18,12 @@ export async function POST(request) {
     if (status === "approved") {
       await prisma.store.update({
         where: { id: storeId },
-        data: { status: "approved" },
+        data: { status: "approved", isActive: true },
       });
     } else if (status === "rejected") {
       await prisma.store.update({
         where: { id: storeId },
-        data: { status: "rejected" },
+        data: { status: "rejected", isActive: false },
       });
     }
     return NextResponse.json({ message: `Store ${status} successfully` }, { status: 200 });
