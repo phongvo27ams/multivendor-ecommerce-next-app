@@ -1,36 +1,56 @@
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux';
-import { PlusIcon, SquarePenIcon, XIcon } from 'lucide-react';
-import AddressModal from './AddressModal';
-import toast from 'react-hot-toast';
-import { useRouter } from 'next/navigation';
-import { Protect } from "@clerk/nextjs";
+import React, { useState } from "react"
+import { useSelector } from "react-redux";
+import { PlusIcon, SquarePenIcon, XIcon } from "lucide-react";
+import AddressModal from "./AddressModal";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { Protect, useAuth, useUser } from "@clerk/nextjs";
+import axios from "axios";
 
 import { formatMoney } from "../lib/format";
 
 const OrderSummary = ({ totalPrice, items }) => {
-  const currency = process.env.NEXT_PUBLIC_CURRENCY_SYMBOL || '$';
+  const { user } = useUser();
+  const { getToken } = useAuth();
+
+  const currency = process.env.NEXT_PUBLIC_CURRENCY_SYMBOL || "$";
 
   const router = useRouter();
 
   const addressList = useSelector(state => state.address.list);
   console.log("OrderSummary: Address list:", addressList);
 
-  const [paymentMethod, setPaymentMethod] = useState('COD');
+  const [paymentMethod, setPaymentMethod] = useState("COD");
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [showAddressModal, setShowAddressModal] = useState(false);
-  const [couponCodeInput, setCouponCodeInput] = useState('');
-  const [coupon, setCoupon] = useState('');
+  const [couponCodeInput, setCouponCodeInput] = useState("");
+  const [coupon, setCoupon] = useState("");
 
-  const handleCouponCode = async (event) => {
-    event.preventDefault();
+  const handleCouponCode = async (e) => {
+    e.preventDefault();
 
+    try {
+      if (!user) {
+        return toast.error("Please login to apply coupon");
+      }
+
+      const token = await getToken();
+      const { data } = await axios.post("/api/coupon", { code: couponCodeInput }, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      setCoupon(data.coupon);
+      toast.success("Coupon applied successfully");
+    } catch (error) {
+      console.error("Error applying coupon:", error);
+      toast.error(error?.response?.data?.error || error.message);
+    }
   }
 
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
 
-    router.push('/orders')
+    router.push("/orders")
   }
 
   return (

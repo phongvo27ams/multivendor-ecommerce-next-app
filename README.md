@@ -1,4 +1,4 @@
-# Multivendor Ecommerce App
+# Multivendor E-commerce Next App
 
 ## Technologies Used
 
