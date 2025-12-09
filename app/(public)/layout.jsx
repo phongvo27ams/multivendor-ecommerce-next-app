@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,6 +10,7 @@ import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 import { fetchCart, uploadCart } from "../../lib/features/cart/cartSlice";
 import { fetchAddresses } from "../../lib/features/address/addressSlice";
+import { fetchUserRatings } from "../../lib/features/rating/ratingSlice";
 
 export default function PublicLayout({ children }) {
   const dispatch = useDispatch();
@@ -27,6 +28,7 @@ export default function PublicLayout({ children }) {
     if (user) {
       dispatch(fetchCart({ getToken }));
       dispatch(fetchAddresses({ getToken }));
+      dispatch(fetchUserRatings({ getToken }));
     }
   }, [user]);
 
