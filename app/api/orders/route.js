@@ -52,6 +52,9 @@ export async function POST(request) {
     }
 
     const orderByStore = new Map();
+    let orderIds = [];
+    let fullAmount = 0;
+    let isShippingFeeAdded = false;
 
     for (const item of items) {
       const product = await prisma.product.findUnique({
@@ -68,10 +71,6 @@ export async function POST(request) {
         ...item,
         price: product.price,
       });
-
-      let orderIds = [];
-      let fullAmount = 0;
-      let isShippingFeeAdded = false;
 
       for (const [storeId, sellerItems] of orderByStore.entries()) {
         let total = sellerItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
