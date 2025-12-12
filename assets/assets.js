@@ -1,29 +1,35 @@
-import gs_logo from "./gs_logo.jpg"
-import happy_store from "./happy_store.webp"
-import upload_area from "./upload_area.svg"
-import hero_model_img from "./hero_model_img.png"
-import hero_product_img1 from "./hero_product_img1.png"
-import hero_product_img2 from "./hero_product_img2.png"
-import product_img1 from "./product_img1.png"
-import product_img2 from "./product_img2.png"
-import product_img3 from "./product_img3.png"
-import product_img4 from "./product_img4.png"
-import product_img5 from "./product_img5.png"
-import product_img6 from "./product_img6.png"
-import product_img7 from "./product_img7.png"
-import product_img8 from "./product_img8.png"
-import product_img9 from "./product_img9.png"
-import product_img10 from "./product_img10.png"
-import product_img11 from "./product_img11.png"
-import product_img12 from "./product_img12.png"
 import { ClockFadingIcon, HeadsetIcon, SendIcon } from "lucide-react";
-import profile_pic1 from "./profile_pic1.jpg"
-import profile_pic2 from "./profile_pic2.jpg"
-import profile_pic3 from "./profile_pic3.jpg"
+
+import upload_area from "./upload_area.svg";
+
+import hero_model_img from "./hero_model_img.png";
+
+import hero_product_img1 from "./hero_product_img1.png";
+import hero_product_img2 from "./hero_product_img2.png";
+
+import product_img1 from "./product_img1.png";
+import product_img2 from "./product_img2.png";
+import product_img3 from "./product_img3.png";
+import product_img4 from "./product_img4.png";
+import product_img5 from "./product_img5.png";
+import product_img6 from "./product_img6.png";
+import product_img7 from "./product_img7.png";
+import product_img8 from "./product_img8.png";
+import product_img9 from "./product_img9.png";
+import product_img10 from "./product_img10.png";
+import product_img11 from "./product_img11.png";
+import product_img12 from "./product_img12.png";
+
+import profile_pic1 from "./profile_pic1.png";
+import profile_pic2 from "./profile_pic2.png";
+import profile_pic3 from "./profile_pic3.png";
+
+import store_logo_1 from "./store_logo_1.webp";
+import store_logo_2 from "./store_logo_2.webp";
 
 export const assets = {
   upload_area, hero_model_img,
-  hero_product_img1, hero_product_img2, gs_logo,
+  hero_product_img1, hero_product_img2,
   product_img1, product_img2, product_img3, product_img4, product_img5, product_img6,
   product_img7, product_img8, product_img9, product_img10, product_img11, product_img12,
 }
@@ -48,7 +54,7 @@ export const dummyStoreData = {
   address: "3rd Floor, Happy Shop , New Building, 123 street , c sector , NY, US",
   status: "approved",
   isActive: true,
-  logo: happy_store,
+  logo: store_logo_1,
   email: "happyshop@example.com",
   contact: "+0 1234567890",
   createdAt: "2025-09-04T09:04:16.189Z",
@@ -57,7 +63,7 @@ export const dummyStoreData = {
     id: "user_31dOriXqC4TATvc0brIhlYbwwc5",
     name: "Great Stack",
     email: "user.greatstack@gmail.com",
-    image: gs_logo,
+    image: profile_pic1,
   }
 }
 
@@ -276,7 +282,7 @@ export const dummyUserData = {
   id: "user_31dQbH27HVtovbs13X2cmqefddM",
   name: "GreatStack",
   email: "greatstack@example.com",
-  image: gs_logo,
+  image: profile_pic1,
   cart: {}
 }
 
@@ -334,7 +340,7 @@ export const storesDummyData = [
     address: "123 Maplewood Drive Springfield, IL 62704 USA",
     status: "approved",
     isActive: true,
-    logo: gs_logo,
+    logo: profile_pic1,
     email: "greatstack@example.com",
     contact: "+0 1234567890",
     createdAt: "2025-08-22T08:22:16.189Z",
@@ -350,7 +356,7 @@ export const storesDummyData = [
     address: "3rd Floor, Happy Shop , New Building, 123 street , c sector , NY, US",
     status: "approved",
     isActive: true,
-    logo: happy_store,
+    logo: store_logo_1,
     email: "happyshop@example.com",
     contact: "+0 123456789",
     createdAt: "2025-08-22T08:34:15.155Z",
