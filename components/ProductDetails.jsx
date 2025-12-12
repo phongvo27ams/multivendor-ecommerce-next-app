@@ -1,11 +1,13 @@
-'use client'
+"use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { addToCart } from "../lib/features/cart/cartSlice";
 import { StarIcon, TagIcon, EarthIcon, CreditCardIcon, UserIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { useAuth, useUser } from "@clerk/nextjs";
 
 import Counter from "./Counter";
 import { formatMoney } from "../lib/format";
@@ -20,8 +22,34 @@ const ProductDetails = ({ product }) => {
   const router = useRouter()
 
   const [mainImage, setMainImage] = useState(product.images[0]);
+  const [isOwnProduct, setIsOwnProduct] = useState(false);
+
+  const { getToken } = useAuth();
+  const { user } = useUser();
+
+  useEffect(() => {
+    const checkSellerOwnership = async () => {
+      try {
+        if (!user) return;
+        const token = await getToken();
+        const { data } = await axios.get("/api/store/is-seller", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const storeId = data?.storeInfo?.id;
+        if (storeId && product.storeId && storeId === product.storeId) {
+          setIsOwnProduct(true);
+        } else {
+          setIsOwnProduct(false);
+        }
+      } catch (err) {
+        setIsOwnProduct(false);
+      }
+    };
+    checkSellerOwnership();
+  }, [user, product.storeId, getToken]);
 
   const addToCartHandler = () => {
+    if (isOwnProduct) return; // Prevent adding own product
     dispatch(addToCart({ productId }))
   }
 
@@ -59,15 +87,19 @@ const ProductDetails = ({ product }) => {
         </div>
         <div className="flex items-end gap-5 mt-10">
           {
-            cart[productId] && (
+            !isOwnProduct && cart[productId] && (
               <div className="flex flex-col gap-3">
                 <p className="text-lg text-slate-800 font-semibold">Quantity</p>
                 <Counter productId={productId} />
               </div>
             )
           }
-          <button onClick={() => !cart[productId] ? addToCartHandler() : router.push('/cart')} className="bg-slate-800 text-white px-10 py-3 text-sm font-medium rounded hover:bg-slate-900 active:scale-95 transition">
-            {!cart[productId] ? 'Add to Cart' : 'View Cart'}
+          <button
+            disabled={isOwnProduct}
+            onClick={() => (!cart[productId] ? addToCartHandler() : router.push('/cart'))}
+            className={`px-10 py-3 text-sm font-medium rounded transition ${isOwnProduct ? 'bg-slate-300 text-slate-500 cursor-not-allowed' : 'bg-slate-800 text-white hover:bg-slate-900 active:scale-95'}`}
+          >
+            {isOwnProduct ? 'Owned Product' : (!cart[productId] ? 'Add to Cart' : 'View Cart')}
           </button>
         </div>
         <hr className="border-gray-300 my-5" />

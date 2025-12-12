@@ -56,58 +56,51 @@ export async function POST(request) {
     let fullAmount = 0;
     let isShippingFeeAdded = false;
 
+    // 1) Group cart items by storeId
     for (const item of items) {
-      const product = await prisma.product.findUnique({
-        where: { id: item.id },
-      });
-
+      const product = await prisma.product.findUnique({ where: { id: item.id } });
       const storeId = product.storeId;
-
       if (!orderByStore.has(storeId)) {
         orderByStore.set(storeId, []);
       }
+      orderByStore.get(storeId).push({ ...item, price: product.price });
+    }
 
-      orderByStore.get(storeId).push({
-        ...item,
-        price: product.price,
+    // 2) Create one order per store exactly once
+    for (const [storeId, sellerItems] of orderByStore.entries()) {
+      let total = sellerItems.reduce((acc, it) => acc + (it.price * it.quantity), 0);
+
+      if (couponCode && coupon) {
+        total -= (coupon.discount / 100) * total;
+      }
+
+      if (!isPlusMember && !isShippingFeeAdded) {
+        total += 5;
+        isShippingFeeAdded = true;
+      }
+
+      fullAmount += parseFloat(total.toFixed(2));
+
+      const order = await prisma.order.create({
+        data: {
+          userId,
+          storeId,
+          addressId,
+          total: parseFloat(total.toFixed(2)),
+          paymentMethod,
+          isCouponUsed: !!coupon,
+          coupon: coupon ? coupon : {},
+          orderItems: {
+            create: sellerItems.map(it => ({
+              productId: it.id,
+              quantity: it.quantity,
+              price: it.price,
+            }))
+          }
+        },
       });
 
-      for (const [storeId, sellerItems] of orderByStore.entries()) {
-        let total = sellerItems.reduce((acc, item) => acc + (item.price * item.quantity), 0);
-
-        if (couponCode) {
-          total -= (coupon.discount / 100) * total;
-        }
-
-        if (!isPlusMember && !isShippingFeeAdded) {
-          total += 5;
-          isShippingFeeAdded = true;
-        }
-
-        fullAmount += parseFloat(total.toFixed(2));
-
-        // Create order for each store
-        const order = await prisma.order.create({
-          data: {
-            userId,
-            storeId,
-            addressId,
-            total: parseFloat(total.toFixed(2)),
-            paymentMethod,
-            isCouponUsed: coupon ? true : false,
-            coupon: coupon ? coupon : {},
-            orderItems: {
-              create: sellerItems.map(item => ({
-                productId: item.id,
-                quantity: item.quantity,
-                price: item.price,
-              }))
-            }
-          },
-        });
-
-        orderIds.push(order.id);
-      }
+      orderIds.push(order.id);
     }
 
     if (paymentMethod === "STRIPE") {

@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { MailIcon, MapPinIcon } from "lucide-react";
 import Image from "next/image";
+import axios from "axios";
 
 import Loading from "../../../../components/Loading";
 import ProductCard from "../../../../components/ProductCard";
