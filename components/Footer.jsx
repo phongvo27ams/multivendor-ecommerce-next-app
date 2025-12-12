@@ -39,7 +39,7 @@ const Footer = () => {
       links: [
         { text: "+84-4410-27773", path: '/', icon: MailIcon },
         { text: "contact@example.com", path: '/', icon: PhoneIcon },
-        { text: "271 Sunset Valley St.", path: '/', icon: MapPinIcon }
+        { text: "252 Sunny Street, Pleasantville, CA 90210", path: '/', icon: MapPinIcon }
       ]
     }
   ];
